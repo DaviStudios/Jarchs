@@ -21,10 +21,12 @@ const bstate = [
     ['b', 'a', 's', 'b', 'a']
 ];
 
-let smartness = 7;
-let chat = [
-    'Wait till this crystal gets out!', 'Abracadabra!', 'My crystal bestows knowledge upon me... You\'re weak!', 'Arbadacarba!'
-]
+const jpi = 700
+let awrd = 0
+let smartness = 8
+if (jpi >= localStorage.getItem('JPI')) {
+    awrd = Math.abs(jpi - localStorage.getItem('JPI'))
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     const board = document.getElementById("chessboard");
@@ -237,6 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (capturedPiece && capturedPiece === 's') {
                 gended = true;
                 alert('Game Over! AI captured the Stash.');
+                subjpi(awrd)
                 return;
             }
 
@@ -268,6 +271,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (capturedPiece && (capturedPiece.toLowerCase() === 's')) {
                             gended = true;
                             alert('Game Over! You captured the Stash.');
+                            addjpi(awrd)
                             return;
                         }
                         slp.classList.remove('selected');
@@ -295,6 +299,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (capturedPiece && (capturedPiece.toLowerCase() === 's')) {
                     gended = true;
                     alert('Game Over! You captured the Stash.');
+                    addjpi(awrd)
                     return;
                 }
                 slp.classList.remove('selected');

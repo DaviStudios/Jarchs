@@ -1,0 +1,1 @@
+document.getElementById('JPI').textContent = localStorage.getItem('JPI')

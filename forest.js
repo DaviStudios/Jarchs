@@ -1,6 +1,6 @@
 const pieces = {
     'B': '<img src="pieces/bearb.png" width="50">', 'b': '<img src="pieces/bear.png" width="50">',
-    'J': '<img src="pieces/jarlb.png" width="50">', 'j': '<img src="pieces/jarl.png" width="50">',
+    'J': '<img src="pieces/bearking.png" width="50">', 'j': '<img src="pieces/jarl.png" width="50">',
     'A': '<img src="pieces/archertowerb.png" width="50">', 'a': '<img src="pieces/archertower.png" width="50">',
     'S': '<img src="pieces/stashb.png" width="50">', 's': '<img src="pieces/stash.png" width="50">',
     'W': '<img src="pieces/warriorb.png" width="50">', 'w': '<img src="pieces/warrior.png" width="50">',
@@ -10,8 +10,8 @@ const moves = [];
 let crp = 'w';
 let gended = false;
 const bstate = [
-    ['A', 'B', 'S', 'A', 'B'],
-    ['W', 'W', 'J', 'W', 'W'],
+    ['B', 'B', 'S', 'B', 'B'],
+    ['B', 'B', 'J', 'B', 'B'],
     ['', '', '', '', ''],
     ['', '', '', '', ''],
     ['', '', '', '', ''],
@@ -21,12 +21,12 @@ const bstate = [
     ['b', 'a', 's', 'b', 'a']
 ];
 
-let smartness = 7;
+let smartness = 4;
 let chat = [
-    'Worthy opponent, i see.', 'Want me to go get my ship?!?!', 'Y\'know, MY village could beat up YOUR village', 'You don\'t stand a chance once i get my mug of beer!'
+    'Graaah!', 'GIBBBB MEATTTT!!!!!!', 'GRAH GRAH GRAH', 'ME IS HUNGRRY!'
 ]
 
-const jpi = 450
+const jpi = 1000
 let awrd = 0
 if (jpi >= localStorage.getItem('JPI')) {
     awrd = Math.abs(jpi - localStorage.getItem('JPI'))

@@ -26,6 +26,12 @@ let chat = [
     'Just wait till my chief hears about this!', 'Want me to go get my axe?!?!', 'Y\'know, MY chief could beat up YOUR chief', 'You don\'t stand a chance once i get my mug of beer!'
 ]
 
+const jpi = 350
+let awrd = 0
+if (jpi >= localStorage.getItem('JPI')) {
+    awrd = Math.abs(jpi - localStorage.getItem('JPI'))
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const board = document.getElementById("chessboard");
 
@@ -237,6 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (capturedPiece && capturedPiece === 's') {
                 gended = true;
                 alert('Game Over! AI captured the Stash.');
+                subjpi(awrd)
                 return;
             }
 
@@ -268,6 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (capturedPiece && (capturedPiece.toLowerCase() === 's')) {
                             gended = true;
                             alert('Game Over! You captured the Stash.');
+                            addjpi(awrd)
                             return;
                         }
                         slp.classList.remove('selected');
@@ -295,6 +303,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (capturedPiece && (capturedPiece.toLowerCase() === 's')) {
                     gended = true;
                     alert('Game Over! You captured the Stash.');
+                    addjpi(awrd)
                     return;
                 }
                 slp.classList.remove('selected');
