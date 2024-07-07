@@ -21,7 +21,7 @@ const bstate = [
     ['b', 'a', 's', 'b', 'a']
 ];
 
-let smartness = 5;
+let smartness = 7;
 let chat = [
     'Wait till this crystal gets out!', 'Abracadabra!', 'My crystal bestows knowledge upon me... You\'re weak!', 'Arbadacarba!'
 ]

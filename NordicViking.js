@@ -22,6 +22,9 @@ const bstate = [
 ];
 
 let smartness = 3;
+let chat = [
+    'Just wait till my chief hears about this!', 'Want me to go get my axe?!?!', 'Y\'know, MY chief could beat up YOUR chief', 'You don\'t stand a chance once i get my mug of beer!'
+]
 
 document.addEventListener("DOMContentLoaded", () => {
     const board = document.getElementById("chessboard");
@@ -238,6 +241,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             moves.push(`${bstate[bestMove.trw][bestMove.tcl]}${bestMove.trw}${bestMove.tcl}`);
+            const msg = chat[Math.floor(Math.random() * chat.length)]
+            document.getElementById('chat').textContent = msg
             boardc();
             crp = crp === 'w' ? 'b' : 'w';
         }

@@ -1,0 +1,27 @@
+.option {
+    width: 200px;
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    padding-right: 100px;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text {
+    flex-grow: 1;
+}
+
+.button {
+    flex-shrink: 0;
+}
+
+.pfp {
+    flex-shrink: 0;
+}

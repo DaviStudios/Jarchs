@@ -6,25 +6,28 @@ const pieces = {
     'W': '<img src="pieces/warriorb.png" width="50">', 'w': '<img src="pieces/warrior.png" width="50">',
 };
 
-const moves = []
-
+const moves = [];
+let crp = 'w';
 let gended = false;
+const bstate = [
+    ['A', 'B', 'S', 'A', 'B'],
+    ['W', 'W', 'J', 'W', 'W'],
+    ['', '', '', '', ''],
+    ['', '', '', '', ''],
+    ['', '', '', '', ''],
+    ['', '', '', '', ''],
+    ['', '', '', '', ''],
+    ['w', 'w', 'j', 'w', 'w'],
+    ['b', 'a', 's', 'b', 'a']
+];
+
+let smartness = 1;
+let chat = [
+    'Meow!', 'Meow, meow, meow!', 'Gib fish! meow!', 'KSSSSSSSSSSSSSSSSS MEOOOOOW'
+]
 
 document.addEventListener("DOMContentLoaded", () => {
     const board = document.getElementById("chessboard");
-    const bstate = [
-        ['A', 'B', 'S', 'A', 'B'],
-        ['W', 'W', 'J', 'W', 'W'],
-        ['', '', '', '', ''],
-        ['', '', '', '', ''],
-        ['', '', '', '', ''],
-        ['', '', '', '', ''],
-        ['', '', '', '', ''],
-        ['w', 'w', 'j', 'w', 'w'],
-        ['b', 'a', 's', 'b', 'a']
-    ];
-
-    let crp = 'w';
 
     function boardc() {
         board.innerHTML = '';
@@ -105,65 +108,167 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    boardc();
-
-    function aim() {
-        if (gended) return; 
-        const aic = 'b';
-        const movesa = [];
-
+    function evaluateBoard() {
+        let score = 0;
         for (let row = 0; row < 9; row++) {
             for (let col = 0; col < 5; col++) {
-                if (bstate[row][col] && bstate[row][col].toLowerCase() !== bstate[row][col] && bstate[row][col].toUpperCase() !== aic.toUpperCase()) {
+                const piece = bstate[row][col];
+                if (piece) {
+                    const value = pieceValue(piece);
+                    score += piece === piece.toUpperCase() ? value : -value;
+                }
+            }
+        }
+        return score;
+    }
+
+    function pieceValue(piece) {
+        switch (piece.toLowerCase()) {
+            case 'b':
+                return 4;
+            case 'w':
+                return 1;
+            case 'a':
+                return 5;
+            case 'j':
+                return 9;
+            case 's':
+                return 10;
+            default:
+                return 0;
+        }
+    }
+
+    function minimax(depth, alpha, beta, maximizingPlayer) {
+        if (depth === 0) {
+            return evaluateBoard();
+        }
+
+        let bestMove;
+        if (maximizingPlayer) {
+            let maxEval = -Infinity;
+            const possibleMoves = generateMoves('b');
+            for (const move of possibleMoves) {
+                const capturedPiece = makeMove(move);
+                const eval = minimax(depth - 1, alpha, beta, false);
+                undoMove(move, capturedPiece);
+                if (eval > maxEval) {
+                    maxEval = eval;
+                    bestMove = move;
+                }
+                alpha = Math.max(alpha, eval);
+                if (beta <= alpha) {
+                    break;
+                }
+            }
+            if (depth === smartness) return bestMove;
+            return maxEval;
+        } else {
+            let minEval = Infinity;
+            const possibleMoves = generateMoves('w');
+            for (const move of possibleMoves) {
+                const capturedPiece = makeMove(move);
+                const eval = minimax(depth - 1, alpha, beta, true);
+                undoMove(move, capturedPiece);
+                if (eval < minEval) {
+                    minEval = eval;
+                    bestMove = move;
+                }
+                beta = Math.min(beta, eval);
+                if (beta <= alpha) {
+                    break;
+                }
+            }
+            return minEval;
+        }
+    }
+
+    function generateMoves(playerColor) {
+        const moves = [];
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 5; col++) {
+                if (bstate[row][col] && ((playerColor === 'b' && bstate[row][col].toUpperCase() === bstate[row][col]) ||
+                    (playerColor === 'w' && bstate[row][col].toLowerCase() === bstate[row][col]))) {
                     for (let trw = 0; trw < 9; trw++) {
                         for (let tcl = 0; tcl < 5; tcl++) {
                             if (ilm(row, col, trw, tcl, bstate[row][col])) {
-                                movesa.push({ frw: row, fcl: col, trw: trw, tcl: tcl });
+                                moves.push({ frw: row, fcl: col, trw: trw, tcl: tcl });
                             }
                         }
                     }
                 }
             }
         }
+        return moves;
+    }
 
-        if (movesa.length > 0) {
-            const move = movesa[Math.floor(Math.random() * movesa.length)];
-            const oldp = bstate[move.trw][move.tcl]
-            console.log(oldp)
-            bstate[move.trw][move.tcl] = bstate[move.frw][move.fcl];
-            bstate[move.frw][move.fcl] = '';
-            movesa.push(`${bstate[move.trw][move.tcl]}${move.trw}${move.tcl}`);
-            boardc();
-            if (oldp.toLowerCase() == 's') {
-                alert('Game over! Grombal won the game!')
+    function makeMove(move) {
+        const capturedPiece = bstate[move.trw][move.tcl];
+        bstate[move.trw][move.tcl] = bstate[move.frw][move.fcl];
+        bstate[move.frw][move.fcl] = '';
+        return capturedPiece;
+    }
+
+    function undoMove(move, capturedPiece) {
+        bstate[move.frw][move.fcl] = bstate[move.trw][move.tcl];
+        bstate[move.trw][move.tcl] = capturedPiece;
+    }
+
+    function isCaptureMove(move, playerColor) {
+        const targetPiece = bstate[move.trw][move.tcl];
+        if (targetPiece && ((playerColor === 'b' && targetPiece.toLowerCase() === targetPiece) ||
+            (playerColor === 'w' && targetPiece.toUpperCase() === targetPiece))) {
+            return true;
+        }
+        return false;
+    }
+
+    function aim() {
+        if (gended) return;
+
+        const bestMove = minimax(smartness, -Infinity, Infinity, true);
+        console.log('Best move:', bestMove);
+
+        if (bestMove) {
+            const capturedPiece = makeMove(bestMove);
+            console.log('Board state after move:', bstate);
+            console.log('Piece at destination:', capturedPiece);
+
+            if (capturedPiece && capturedPiece === 's') {
                 gended = true;
-                return
+                alert('Game Over! AI captured the Stash.');
+                return;
             }
+
+            moves.push(`${bstate[bestMove.trw][bestMove.tcl]}${bestMove.trw}${bestMove.tcl}`);
+            const msg = chat[Math.floor(Math.random() * chat.length)]
+            document.getElementById('chat').textContent = msg
+            boardc();
             crp = crp === 'w' ? 'b' : 'w';
         }
     }
 
+
     let slp = null;
     board.addEventListener('click', (event) => {
+        if (gended) return;
         const target = event.target.closest('.piece, .square');
         if (!target) return;
 
         if (target.classList.contains('piece')) {
-            if (gended) return;
             if (slp) {
                 const pieceColor = target.dataset.piece === target.dataset.piece.toUpperCase() ? 'b' : 'w';
                 if (pieceColor !== crp) {
                     const [frw, fcl] = [slp.parentNode.dataset.row, slp.parentNode.dataset.col];
                     const [trw, tcl] = [target.parentNode.dataset.row, target.parentNode.dataset.col];
                     if (ilm(Number(frw), Number(fcl), Number(trw), Number(tcl), slp.dataset.piece)) {
-                        const oldp = bstate[trw][tcl]
-                        bstate[trw][tcl] = bstate[frw][fcl];
-                        bstate[frw][fcl] = '';
+                        const capturedPiece = makeMove({ frw: Number(frw), fcl: Number(fcl), trw: Number(trw), tcl: Number(tcl) });
+                        moves.push(`${bstate[trw][tcl]}${trw}${tcl}`);
                         boardc();
-                        if (oldp.toLowerCase() == 's') {
-                            alert('Game over! You won the game!')
+                        if (capturedPiece && (capturedPiece.toLowerCase() === 's')) {
                             gended = true;
-                            return
+                            alert('Game Over! You captured the Stash.');
+                            return;
                         }
                         slp.classList.remove('selected');
                         slp = null;
@@ -184,10 +289,14 @@ document.addEventListener("DOMContentLoaded", () => {
             let [frw, fcl] = [slp.parentNode.dataset.row, slp.parentNode.dataset.col];
             let [trw, tcl] = [target.dataset.row, target.dataset.col];
             if (ilm(Number(frw), Number(fcl), Number(trw), Number(tcl), slp.dataset.piece)) {
-                bstate[trw][tcl] = bstate[frw][fcl];
-                bstate[frw][fcl] = '';
+                const capturedPiece = makeMove({ frw: Number(frw), fcl: Number(fcl), trw: Number(trw), tcl: Number(tcl) });
                 moves.push(`${bstate[trw][tcl]}${trw}${tcl}`);
                 boardc();
+                if (capturedPiece && (capturedPiece.toLowerCase() === 's')) {
+                    gended = true;
+                    alert('Game Over! You captured the Stash.');
+                    return;
+                }
                 slp.classList.remove('selected');
                 slp = null;
                 crp = crp === 'w' ? 'b' : 'w';
@@ -198,6 +307,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     });
+
+    boardc();
 });
 
 let savemenu = false

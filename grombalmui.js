@@ -21,7 +21,10 @@ const bstate = [
     ['b', 'a', 's', 'b', 'a']
 ];
 
-let smartness = 3;
+let smartness = 10;
+let chat = [
+    'Meow!', 'Meow, meow, meow!', 'Gib fish! meow!', 'KSSSSSSSSSSSSSSSSS MEOOOOOW'
+]
 
 document.addEventListener("DOMContentLoaded", () => {
     const board = document.getElementById("chessboard");
@@ -238,6 +241,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             moves.push(`${bstate[bestMove.trw][bestMove.tcl]}${bestMove.trw}${bestMove.tcl}`);
+            const msg = chat[Math.floor(Math.random() * chat.length)]
+            document.getElementById('chat').textContent = msg
             boardc();
             crp = crp === 'w' ? 'b' : 'w';
         }

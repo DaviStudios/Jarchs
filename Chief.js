@@ -21,7 +21,7 @@ const bstate = [
     ['b', 'a', 's', 'b', 'a']
 ];
 
-let smartness = 5;
+let smartness = 8;
 let chat = [
     'Worthy opponent, i see.', 'Want me to go get my ship?!?!', 'Y\'know, MY village could beat up YOUR village', 'You don\'t stand a chance once i get my mug of beer!'
 ]

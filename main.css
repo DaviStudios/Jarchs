@@ -1,5 +1,3 @@
-/* styles.css */
-
 body {
     display: flex;
     justify-content: center;
@@ -7,6 +5,7 @@ body {
     height: 100vh;
     background-color: #f0f0f0;
     margin: 0;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 #chessboard {
@@ -21,12 +20,36 @@ body {
     height: 50px;
 }
 
+#bname {
+    margin-left: 10px;
+    margin-bottom: 100px;
+    font-weight: 500;
+    font-size: 50px;
+    padding-right: 10px;
+    overflow-x: scroll;
+}
+
+#chat {
+    margin-left: 4px;
+}
+
+#right {
+    border: 2px solid black;
+    height: 450px;
+    width: 143px;
+}
+
 .white {
     background-color: #fff;
 }
 
 .black {
     background-color: #000;
+}
+
+.buttonnt {
+    margin-bottom: 140px;
+    margin-left: 4px;
 }
 
 .piece {
@@ -42,7 +65,7 @@ body {
 .text-background {
     position: relative;
     color: transparent;
-    font-size: 50px; /* Adjust as needed */
+    font-size: 50px;
     font-weight: bold;
 }
 

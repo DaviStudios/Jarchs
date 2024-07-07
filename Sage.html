@@ -3,12 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess Game</title>
+    <title>Jarchs - Sage</title>
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
     <div id="chessboard"></div>
-    <button id="saveb" onclick="save()">save</button>
-    <script src="NordishViking.js"></script>
+    <div id="right">
+        <p id="bname">Sage</p>
+        <img src="bots/sage.png">
+        <p id="chat">Hm, shall we start?</p>
+        <hr>
+        <button class="buttonnt" onclick="save()">Moves</button>
+        <button class="buttonnt" onclick="gotos('index')">Go back</button>
+    </div>
+    <script src="Sage.js"></script>
+    <script src="gotos.js"></script>
 </body>
 </html>

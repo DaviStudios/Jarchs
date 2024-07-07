@@ -2,13 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Chess-like Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarchs - Nordic Viking</title>
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <p style="position: fixed; top: 75px">The Worst Viking - 100</p>
     <div id="chessboard"></div>
-    <button id="saveb" onclick="save()">save</button>
+    <div id="right">
+        <p id="bname">Grombal</p>
+        <img src="bots/grombal.png">
+        <p id="chat">Meow???</p>
+        <hr>
+        <button class="buttonnt" onclick="save()">Moves</button>
+        <button class="buttonnt" onclick="gotos('index')">Go back</button>
+    </div>
     <script src="grombal.js"></script>
+    <script src="gotos.js"></script>
 </body>
 </html>

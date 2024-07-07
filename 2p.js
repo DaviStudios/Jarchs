@@ -11,7 +11,7 @@ const moves = []
 document.addEventListener("DOMContentLoaded", () => {
     const board = document.getElementById("chessboard");
     const bstate = [
-        ['B', 'A', 'S', 'A', 'B'],
+        ['A', 'B', 'S', 'A', 'B'],
         ['W', 'W', 'J', 'W', 'W'],
         ['', '', '', '', ''],
         ['', '', '', '', ''],
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ['', '', '', '', ''],
         ['', '', '', '', ''],
         ['w', 'w', 'j', 'w', 'w'],
-        ['b', 'a', 's', 'a', 'b']
+        ['b', 'a', 's', 'b', 'a']
     ];
 
     let crp = 'w';
@@ -94,6 +94,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 return false;
             case 's':
+                if (Math.abs(rd) === 1 && Math.abs(cd) === 1) {
+                    return true;
+                }
                 return false;
             default:
                 return false;
